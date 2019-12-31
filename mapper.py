@@ -41,7 +41,7 @@ class ImageMap():
                 while(y < img.height):
                     X.append(x)
                     Y.append(img.height-y)
-                    Z.append(0.2126*pix[x,y][0]+0.7152*pix[x,y][1]+0.0722*pix[x,y][1])
+                    Z.append(-1*(0.2126*pix[x,y][0]+0.7152*pix[x,y][1]+0.0722*pix[x,y][1]))
                     y += size
                 x += size
         else:
@@ -52,9 +52,11 @@ class ImageMap():
                 while(x < img.width):
                     X.insert(0,x)
                     Y.append(y)
-                    Z.append(0.2126*pix[x,y][0]+0.7152*pix[x,y][1]+0.0722*pix[x,y][1])
+                    Z.append(-1*(0.2126*pix[x,y][0]+0.7152*pix[x,y][1]+0.0722*pix[x,y][1]))
                     x += size
                 y += size
+
+
 
         Z = np.array(Z)
         ax = fig.add_subplot(111, projection='3d')
@@ -64,10 +66,11 @@ class ImageMap():
         ax.set_zlabel('Z')
 
         ax.axis('off')
-        ax.plot_trisurf(X,Y,Z, linewidth=0.2, cmap='binary_r')
+        ax.plot_trisurf(X,Y,Z, linewidth=0.2, cmap='Oranges')
         
         if animation == 0:
             ax.set_zlim(0, 500)
+            ax.view_init(elev=75,azim=90)
             plt.show()
         elif animation == 1:
             for angle in range(0,180):
