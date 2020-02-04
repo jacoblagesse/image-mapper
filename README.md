@@ -2,6 +2,8 @@
 
 A Python program that maps an image onto a 3D graph based on brightness levels (calculated using pixel luminance, 0.2126*R + 0.7152*G + 0.0722*B). Uses PIL and Pyplot. A higher z-value represents a lighter area of the image.
 
+![gif](https://github.com/jacoblagesse/image-mapper/blob/master/res/3dmap.gif)
+
 ## Get started
 
 Via command line, navigate into the directory containing the project. The syntax for running the mapper is:
