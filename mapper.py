@@ -1,6 +1,8 @@
 from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 import matplotlib
+from matplotlib import cm
+from matplotlib.colors import ListedColormap
 import PyQt5
 matplotlib.use('Qt4Agg')
 
@@ -41,7 +43,7 @@ class ImageMap():
                 while(y < img.height):
                     X.append(x)
                     Y.append(img.height-y)
-                    Z.append(-1*(0.2126*pix[x,y][0]+0.7152*pix[x,y][1]+0.0722*pix[x,y][1]))
+                    Z.append(1*(0.2126*pix[x,y][0]+0.7152*pix[x,y][1]+0.0722*pix[x,y][1]))
                     y += size
                 x += size
         else:
@@ -52,29 +54,42 @@ class ImageMap():
                 while(x < img.width):
                     X.insert(0,x)
                     Y.append(y)
-                    Z.append(-1*(0.2126*pix[x,y][0]+0.7152*pix[x,y][1]+0.0722*pix[x,y][1]))
+                    Z.append(1*(0.2126*pix[x,y][0]+0.7152*pix[x,y][1]+0.0722*pix[x,y][1]))
                     x += size
                 y += size
 
 
 
         Z = np.array(Z)
+        '''for item in Z:
+            print(item)'''
         ax = fig.add_subplot(111, projection='3d')
+
+        oranges = cm.get_cmap('Greys', 256)
+        newcolors = oranges(np.linspace(0, 1, 256))
+        whites = np.array([0, 0, 0, 0])
+        newcolors[:2, :] = whites
+        newcmp = ListedColormap(newcolors)
 
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
 
         ax.axis('off')
-        ax.plot_trisurf(X,Y,Z, linewidth=0.2, cmap='Oranges')
+        ax.plot_trisurf(X,Y,Z, linewidth=0.2, cmap=newcmp)
         
+        fig = matplotlib.pyplot.gcf()
+        fig.set_size_inches(18.5, 10.5)
+        fig.savefig('test2png.png', dpi=100)
+
+        ax.set_zlim(0, 300)
+
         if animation == 0:
-            ax.set_zlim(0, 500)
             ax.view_init(elev=75,azim=90)
             plt.show()
         elif animation == 1:
             for angle in range(0,180):
-                ax.view_init(elev=60,azim=angle*2)
+                ax.view_init(elev=75,azim=angle*2)
                 plt.draw()
                 plt.pause(0.001)
         elif animation == 2:
